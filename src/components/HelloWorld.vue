@@ -17,8 +17,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import Button from 'primevue/button';
-import LoadingButton from './LoadingButton.vue'; // Adjust the path as necessary
+import LoadingButton from './LoadingButton.vue'; 
 
 export default defineComponent({
   components: {
