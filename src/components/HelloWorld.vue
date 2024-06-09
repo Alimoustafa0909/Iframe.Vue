@@ -12,7 +12,18 @@
       @click="handleDelayButtonClick"
       customClass="button"
     />
+
+    <Button
+    id="btnSendMessage"
+    type="button"
+      label="Test"
+      icon="pi pi-clock"
+      @click="handleTestButton"
+      customClass="button"
+    />
   </div>
+
+
 </template>
 
 <script>
@@ -31,18 +42,28 @@ export default defineComponent({
         done(); // Call this function to stop the loading state
       }, 3000);
     };
-      const handleDelayButtonClick = (done) => {
+      const handleDelayButtonClick = (handleTestButton) => {
       // Simulate a delay of 3 seconds after performing its function
       console.log('Delay button clicked!');
       setTimeout(() => {
         console.log('Delay button function completed after 3 seconds');
-        done(); // Call this function to stop the loading state
+        handleTestButton(); // Call this function to stop the loading state
       }, 3000);
     };
 
-    return {
+const handleTestButton = () => {
+ const btnSendMessage =document.querySelector("#btnSendMessage");
+    btnSendMessage.addEventListener("click", () => {
+      window.parent.postMessage("dcode", "*" )
+      console.log('tesstt ')
+    });
+}
+   
+
+    return { 
       handleButtonClick,
       handleDelayButtonClick,
+      handleTestButton,
     };
   },
 });
