@@ -1,23 +1,36 @@
 <template>
-<Button id="btnSendMessage"  @click="handleTestButton"  label="share" severity="share" />
-  
+  <div id="app">
+    <Button 
+      id="btnSendMessage" 
+      @click="startShare" 
+      :label="loading ? 'Loading...' : 'Share'" 
+      :icon="loading ? 'pi pi-spin pi-spinner' : 'pi pi-share'" 
+      :disabled="loading"
+    />
+  </div>
 </template>
 
-  
-
-<script setup  lang="ts">
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import Button from 'primevue/button';
 
+const loading = ref(false);
 
-const handleTestButton = () => {
-  console.log('tesstt ')
+const startShare = () => {
+  loading.value = true;
+  console.log('Start sharing process');
+  window.parent.postMessage({ action: 'Sharee' }, '*');
+};
 
-      window.parent.postMessage("Sharee", "*" )
-     
-  }
+window.addEventListener('message', (event) => {
+    if (event.data.action === 'fetchComplete') {
+      loading.value = false;
+      console.log('Fetch complete, stop loading');
+    }
+  });
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -25,5 +38,15 @@ const handleTestButton = () => {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.pi-spin {
+  animation: pi-spin 1s infinite linear;
+}
+
+@keyframes pi-spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
