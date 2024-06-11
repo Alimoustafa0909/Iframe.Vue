@@ -1,22 +1,20 @@
 <template>
-  <HelloWorld/>
+<Button id="btnSendMessage"  @click="handleTestButton"  label="share" severity="share" />
   
 </template>
 
   
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+<script setup  lang="ts">
+import Button from 'primevue/button';
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
+
+const handleTestButton = () => {
+  console.log('tesstt ')
+
+      window.parent.postMessage("Sharee", "*" )
+     
   }
-});
-
-
 </script>
 
 <style>
