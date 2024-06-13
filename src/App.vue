@@ -1,33 +1,42 @@
 <template>
   <div id="app">
-    <Button 
-      id="btnSendMessage" 
-      @click="startShare" 
-      :label="loading ? 'Loading...' : 'Share'" 
-      :icon="loading ? 'pi pi-spin pi-spinner' : 'pi pi-share'" 
+    <Button
+      id="btnSendMessage"
+      @click="startShare"
+      :label="loading ? 'Loading...' : 'Share'"
+      :icon="loading ? 'pi pi-spin pi-spinner' : 'pi pi-share'"
       :disabled="loading"
     />
+    <Button id="btnFetchName" @click="fetchName" label="Fetch Name" icon="pi pi-search" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import Button from 'primevue/button';
+import { ref, onMounted } from "vue";
+import Button from "primevue/button";
 
 const loading = ref(false);
 
 const startShare = () => {
   loading.value = true;
-  console.log('Start sharing process');
-  window.parent.postMessage({ action: 'Sharee' }, '*');
+  console.log("Start sharing process");
+  window.parent.postMessage({ action: "Sharee" }, "*");
 };
 
-window.addEventListener('message', (event) => {
-    if (event.data.action === 'fetchComplete') {
-      loading.value = false;
-      console.log('Fetch complete, stop loading');
-    }
-  });
+const fetchName = () => {
+  console.log("Fetching name from document");
+  window.parent.postMessage({ action: "fetchName" }, "*");
+};
+
+window.addEventListener("message", event => {
+  if (event.data.action === "fetchComplete") {
+    loading.value = false;
+    console.log("Fetch complete, stop loading");
+  } else if (event.data.action === "sendName") {
+    console.log("Received name:", event.data.name);
+    // Handle the received name here, e.g., display it in the UI
+  }
+});
 </script>
 
 <style scoped>
